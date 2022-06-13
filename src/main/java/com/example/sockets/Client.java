@@ -1,27 +1,35 @@
 package com.example.sockets;
 
+import javafx.beans.property.SimpleStringProperty;
+
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
 
-    public static void main(String[] args) {
+    private BufferedWriter os;
+    private BufferedReader is;
+    private SimpleStringProperty word = new SimpleStringProperty("");
+
+    public Client(){
+
+    }
+
+    public void start() {
 
         // Server Host
         final String serverHost = "localhost";
 
         Socket socketOfClient = null;
-        BufferedWriter os = null;
-        BufferedReader is = null;
 
         try {
 
             socketOfClient = new Socket(serverHost, 5000);
 
-            os = new BufferedWriter(new OutputStreamWriter(socketOfClient.getOutputStream()));
+            this.os = new BufferedWriter(new OutputStreamWriter(socketOfClient.getOutputStream()));
 
-            is = new BufferedReader(new InputStreamReader(socketOfClient.getInputStream()));
+            this.is = new BufferedReader(new InputStreamReader(socketOfClient.getInputStream()));
 
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + serverHost);
@@ -32,21 +40,24 @@ public class Client {
         }
 
         try {
+
+
             os.write("HELO"+'\0');
             os.newLine();
             os.flush();
             int responseLine;
-            String word = "";
             responseLine = is.read();
+
             while (true) {
                 while(responseLine != 0){
-                    word = word+(char)responseLine;
+                    word.set(word.get()+(char)responseLine);
                     responseLine = is.read();
                 }
-                if(word.equals("EXIT")) break;
-                else System.out.println("Server: "+word);
+                if(word.get().equals("EXIT")) break;
+                else System.out.println("Server: "+word.get());
                 responseLine = is.read();
             }
+
 
             os.close();
             is.close();
@@ -56,6 +67,16 @@ public class Client {
         } catch (IOException e) {
             System.err.println("IOException:  " + e);
         }
+    }
+
+    public void send(String message) throws IOException {
+        os.write(message+'\0');
+        os.newLine();
+        os.flush();
+    }
+
+    public SimpleStringProperty getWord(){
+        return this.word;
     }
 
 }
