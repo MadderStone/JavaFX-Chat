@@ -4,12 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dae3065c-a843-443f-899a-9e149377757e" name="Changes" comment="init 2">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/sockets/ListeningThread.java" afterDir="false" />
+    <list default="true" id="dae3065c-a843-443f-899a-9e149377757e" name="Changes" comment="started javafx">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/sockets/Thread.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sockets/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sockets/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sockets/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sockets/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sockets/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sockets/HelloController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sockets/ListeningThread.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/sockets/server.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/sockets/server.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/sockets/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/sockets/hello-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +82,14 @@
       <option name="project" value="LOCAL" />
       <updated>1655127830518</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="started javafx">
+      <created>1655133328635</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1655133328635</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -97,6 +106,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="init 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="init 2" />
+    <MESSAGE value="started javafx" />
+    <option name="LAST_COMMIT_MESSAGE" value="started javafx" />
   </component>
 </project>

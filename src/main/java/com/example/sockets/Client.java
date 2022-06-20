@@ -1,6 +1,8 @@
 package com.example.sockets;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,7 +13,9 @@ public class Client {
     private BufferedWriter os;
     private BufferedReader is;
     private SimpleStringProperty word = new SimpleStringProperty("");
+    private Thread thread;
 
+    private Socket socketOfClient;
     public Client(){
 
     }
@@ -21,7 +25,6 @@ public class Client {
         // Server Host
         final String serverHost = "localhost";
 
-        Socket socketOfClient = null;
 
         try {
 
@@ -41,27 +44,7 @@ public class Client {
 
         try {
 
-
-            os.write("HELO"+'\0');
-            os.newLine();
-            os.flush();
-            int responseLine;
-            responseLine = is.read();
-
-            while (true) {
-                while(responseLine != 0){
-                    word.set(word.get()+(char)responseLine);
-                    responseLine = is.read();
-                }
-                if(word.get().equals("EXIT")) break;
-                else System.out.println("Server: "+word.get());
-                responseLine = is.read();
-            }
-
-
-            os.close();
-            is.close();
-            socketOfClient.close();
+            this.thread = new Thread(is, os, socketOfClient);
         } catch (UnknownHostException e) {
             System.err.println("Trying to connect to unknown host: " + e);
         } catch (IOException e) {
@@ -70,13 +53,21 @@ public class Client {
     }
 
     public void send(String message) throws IOException {
+        this.thread = new Thread(is, os, socketOfClient);
         os.write(message+'\0');
         os.newLine();
         os.flush();
+        this.thread.run();
+        this.word.set(this.thread.getWord().get());
     }
 
     public SimpleStringProperty getWord(){
         return this.word;
     }
+
+    public Thread getThread() {
+        return thread;
+    }
+
 
 }

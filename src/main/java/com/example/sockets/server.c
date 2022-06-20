@@ -6,6 +6,9 @@
 #include <string.h>
 #include <unistd.h>
 
+char ** allClientMessages = NULL;
+int nbMessages = 0;
+
 int createServer(int port, struct sockaddr_in * sa){
     int sd = socket(PF_INET, SOCK_STREAM, 0);
     if(sd == -1){
@@ -40,13 +43,55 @@ int createConnection(int serverSocket, struct sockaddr_in * sa){
     return err;
 }
 
+char * mirror(char * word){
+    char * new  = (char*)malloc(strlen(word)+1);
+    int i, j;
+    j = 0;
+    for(i = strlen(word)-1; i >= 0; i--){
+        *(new+j) = *(word+i);
+        j++;
+    }
+    *(new+j) = '\0';
+    return new;
+}
+
 int sendMessage(int socket, char * query){
+    printf("Sending: %s\n",query);
     int nb  = send(socket, query, strlen(query)+1, 0);
     if(nb == -1){
         perror("Erreur send");
         exit(0);
     }
     return nb;
+}
+
+char * getHistory(int socket){
+    int i, j, cpt;
+    char * result = NULL;
+    for(i=0;i<nbMessages;i++){
+        for(j=0; j<strlen(*(allClientMessages+i));j++){
+            cpt++;
+            result = (char*)realloc(result, sizeof(char)*cpt);
+            *(result+(cpt-1)) = allClientMessages[i][j];
+        }
+        cpt++;
+            *(result+(cpt-1)) = '\n';
+    }
+    return result;
+}
+
+int saveMessage(char * message){
+    nbMessages++;
+    printf("%d\n", nbMessages);
+    allClientMessages = (char **)realloc(allClientMessages, sizeof(char *) * nbMessages);
+    *(allClientMessages+(nbMessages-1)) = (char *)malloc(sizeof(char)*(strlen(message)+1));
+    *(allClientMessages+(nbMessages-1)) = message;
+    //*(allClientMessages+(nbMessages)) = '\0';
+    
+    int i;
+    for(i=0;i<nbMessages;i++){
+        printf("%s\n", *(allClientMessages+i));
+    }
 }
 
 char * readMess(int sockId){
@@ -59,20 +104,13 @@ char * readMess(int sockId){
         i++;
         message = realloc(message, ((i+1)*sizeof(char)));
     }
-    *(message + i) = '\0';
-    return message;
-}
-
-char * mirror(char * word){
-    char * new  = (char*)malloc(strlen(word)+1);
-    int i, j;
-    j = 0;
-    for(i = strlen(word)-1; i >= 0; i--){
-        *(new+j) = *(word+i);
-        j++;
+    if(strcmp(message, "1111") == 0){
+        sendMessage(sockId, getHistory(sockId));
+        return message;
     }
-    *(new+j) = '\0';
-    return new;
+    saveMessage(message);
+    sendMessage(sockId, mirror(message));
+    return message;
 }
 
 int main()
@@ -93,9 +131,9 @@ int main()
 
    
     else{
-        char* requete = readMess(sclient);
-        printf("Reçu: %s\n", requete);
-        sendMessage(sclient, mirror(requete));
+        while(1 == 1){
+            char* requete = readMess(sclient);
+        }
     }
     
    } 

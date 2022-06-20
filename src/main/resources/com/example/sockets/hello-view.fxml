@@ -8,31 +8,31 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sockets.HelloController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="414.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sockets.HelloController">
    <children>
-      <HBox prefHeight="400.0" prefWidth="600.0">
+      <HBox prefHeight="400.0" prefWidth="414.0" translateZ="98.0">
          <children>
             <VBox alignment="BOTTOM_CENTER" prefHeight="400.0" prefWidth="300.0">
                <children>
-                  <ScrollPane prefHeight="373.0" prefWidth="300.0">
+                  <ScrollPane prefHeight="373.0" prefWidth="300.0" translateZ="98.0">
                      <content>
-                        <Text fx:id="logClient" strokeType="OUTSIDE" strokeWidth="0.0" text="Your messages:" wrappingWidth="284.7294921875" />
+                        <Text fx:id="logServer" strokeType="OUTSIDE" strokeWidth="0.0" text="Server Messages:" wrappingWidth="284.7294921875" />
                      </content>
                   </ScrollPane>
                   <HBox alignment="CENTER" prefHeight="42.0" prefWidth="300.0">
                      <children>
-                        <TextArea prefHeight="40.0" prefWidth="241.0" />
-                        <Button mnemonicParsing="false" prefHeight="47.0" prefWidth="60.0" text="SEND" />
+                        <TextArea fx:id="input" prefHeight="40.0" prefWidth="241.0" />
+                        <Button mnemonicParsing="false" onAction="#sendMessage" prefHeight="47.0" prefWidth="60.0" text="SEND" />
                      </children>
                   </HBox>
                </children>
             </VBox>
-            <VBox prefHeight="400.0" prefWidth="300.0">
+            <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="115.0">
                <children>
-                  <ScrollPane prefHeight="410.0" prefWidth="300.0">
+                  <Button mnemonicParsing="false" onAction="#printLogs" prefHeight="24.0" prefWidth="123.0" text="LOGS" />
+                  <ScrollPane prefHeight="377.0" prefWidth="115.0">
                      <content>
-                        <Text fx:id="logServer" strokeType="OUTSIDE" strokeWidth="0.0" text="Server messages:" wrappingWidth="284.7294921875" />
+                        <Text fx:id="logs" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="112.0" />
                      </content>
                   </ScrollPane>
                </children>
