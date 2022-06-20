@@ -56,7 +56,7 @@ char * mirror(char * word){
 }
 
 int sendMessage(int socket, char * query){
-    printf("Sending: %s\n",query);
+    printf("Sending: %s.\n",query);
     int nb  = send(socket, query, strlen(query)+1, 0);
     if(nb == -1){
         perror("Erreur send");
@@ -66,32 +66,29 @@ int sendMessage(int socket, char * query){
 }
 
 char * getHistory(int socket){
+    printf("HISTORY\n");
     int i, j, cpt;
     char * result = NULL;
     for(i=0;i<nbMessages;i++){
-        for(j=0; j<strlen(*(allClientMessages+i));j++){
-            cpt++;
-            result = (char*)realloc(result, sizeof(char)*cpt);
-            *(result+(cpt-1)) = allClientMessages[i][j];
-        }
-        cpt++;
-            *(result+(cpt-1)) = '\n';
+        cpt += strlen(*(allClientMessages+i))+1;
+        result = (char*)realloc(result, sizeof(char)*cpt);
+        strcat(result, *(allClientMessages+i));
+        strcat(result, "\n");
     }
     return result;
 }
 
 int saveMessage(char * message){
     nbMessages++;
-    printf("%d\n", nbMessages);
     allClientMessages = (char **)realloc(allClientMessages, sizeof(char *) * nbMessages);
     *(allClientMessages+(nbMessages-1)) = (char *)malloc(sizeof(char)*(strlen(message)+1));
     *(allClientMessages+(nbMessages-1)) = message;
     //*(allClientMessages+(nbMessages)) = '\0';
-    
+    /*
     int i;
     for(i=0;i<nbMessages;i++){
         printf("%s\n", *(allClientMessages+i));
-    }
+    }*/
 }
 
 char * readMess(int sockId){
@@ -99,14 +96,16 @@ char * readMess(int sockId){
     char c = 1;
     int i = 0;
     while(c != '\0'){
+        message = realloc(message, ((i+1)*sizeof(char)));
         recv(sockId, &c, 1, 0);
         *(message + i) = c;
         i++;
-        message = realloc(message, ((i+1)*sizeof(char)));
     }
-    if(strcmp(message, "1111") == 0){
+    printf("Received: %s.\n", message);
+    if(message[0] == '?'){
+        printf("%d\n", strcmp(&message[0], "?"));
         sendMessage(sockId, getHistory(sockId));
-        return message;
+        return NULL;
     }
     saveMessage(message);
     sendMessage(sockId, mirror(message));

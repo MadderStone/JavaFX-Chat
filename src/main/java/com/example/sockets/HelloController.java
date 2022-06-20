@@ -30,7 +30,7 @@ public class HelloController implements Initializable {
         ChangeListener c = new ChangeListener() {
             @Override
             public void changed(ObservableValue observableValue, Object o, Object t1) {
-                logServer.setText(logServer.getText()+client.getWord().get());
+                logServer.setText(logServer.getText()+"\n"+client.getWord().get());
             }
         };
         this.client.getWord().addListener(c);
@@ -40,13 +40,13 @@ public class HelloController implements Initializable {
     @FXML
     void sendMessage(ActionEvent event) throws IOException {
         this.client.send(this.input.getText());
-        this.input.setText("");
+        this.input.setText(null);
     }
 
 
 
     @FXML
     void printLogs(ActionEvent event) throws IOException {
-        this.client.send("1111");
+        this.client.getLogs();
     }
 }

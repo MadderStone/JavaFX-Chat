@@ -55,7 +55,6 @@ public class Client {
     public void send(String message) throws IOException {
         this.thread = new Thread(is, os, socketOfClient);
         os.write(message+'\0');
-        os.newLine();
         os.flush();
         this.thread.run();
         this.word.set(this.thread.getWord().get());
@@ -69,5 +68,12 @@ public class Client {
         return thread;
     }
 
+    public void getLogs() throws IOException {
+        this.thread = new Thread(is, os, socketOfClient);
+        os.write("?"+'\0');
+        os.flush();
+        this.thread.run();
+        this.word.set(this.thread.getWord().get());
+    }
 
 }
